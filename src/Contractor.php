@@ -13,9 +13,10 @@ class Contractor{
 
     public function buildReport(float $caHt): string
     {
-        $activityLabels
-        $taxLabels
-        $header
+        $activityLabels = ["bic-ventes" => "BIC Ventes", "bic" => "BIC", "bnc" => "BNC"];
+        $taxLabels = ["ps" => "Prélévement à la source", "vfl" => "Versement fiscal libératoire"];
+        $header = $this->fullname . " " . $activityLabels[$this->activity] . " " . $taxLabels[$this->taxSystem] . PHP_EOL;
+        return $header . $this->strategy->buildReport($caHt, $this->taxSystem);
     }
 
     public function describe(): string
