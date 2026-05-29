@@ -1,12 +1,11 @@
 <?php
 
-/**
- * Couche d'abstraction sur l'origine des données.
- */
+namespace Urssaf;
+
 class ContractorRepository
 {
     //Injection de dépendance dans le constructeur de l'instance PDO (accès a la base de données)
-    public function __construct(private PDO $pdo) {}
+    public function __construct(private \PDO $pdo) {}
 
 
     /**
@@ -16,15 +15,35 @@ class ContractorRepository
      */
     public function save(string $fullName, string $siret, string $activity, string $taxSystem): int
     {
-        //À implémenter...
+        $stmt = this->pdo->prepare([
+            "INSERT INTO contractor (full_name, siret, activity, tax_system)
+            VALUES (:fullName, :siret, :activity, :taxSystem)"
+        ]);
+        return (int) $this->pdo->lastInsertId();
     }
 
-    /**
-     * @return Contractor|null
-     */
     public function find(int $id): ?Contractor
     {
-        //À implémenter...
+        $stmt = $this->pdo->prepare("SELECT * FROM contractor WHERE id = :id");
+        $stmt->execute(["id"=>$id]);
+        $row = $stmt->fetch();
+        if (!row) 
+        {
+            return null;
+        }
+        $strategy = match ($row["activity"]) {
+            "bic" => new BicStrategy(),
+            "bic-vente" => new BicVenteStrategy(),
+            "bnc" => new BncStrategy(),
+        };
+        return new Contractor(
+            $row["full_name"],
+            $row["siret"],
+            $row["activity"],
+            $row["tax_system"],
+            $strategy,
+            (int)$row["id"],
+        );
     }
 
     /**
@@ -32,6 +51,11 @@ class ContractorRepository
      */
     public function findAll(): array
     {
-        //À implémenter...
+        $stmt = $this->pdo->query("SELECT * FROM contractor ORDER BY id");
+        $contractors = [];
+        foreach ($stmt as $row) {
+            $contractors[] = $this->hydrate($row);
+        }
+        return $contractors;
     }
 }

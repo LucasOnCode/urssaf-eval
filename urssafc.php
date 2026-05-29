@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Urssaf\Contractor;
-use Urssaf\BicStrategy;
-use Urssaf\BicVenteStrategy;
-use Urssaf\BncStrategy;
+use Urssaf\ContractorRepository;
 
 // 1. Configuration PDO SQLite...
 $options = [
@@ -34,10 +31,6 @@ switch ($command) {
         // 1. Valider le SIRET, gérer les doublons, et insérer en BDD
         if (!preg_match('/^\d{14}$/', $siret)) {
             echo "Erreur: SIRET invalide.\n";
-            exit(1);
-        }
-        if ($repository->findBySiret($siret) !== null) {
-            echo "Erreur: SIRET déjà utilisé.\n";
             exit(1);
         }
         $repository->save($fullName, $siret, $activity, $taxSystem);
