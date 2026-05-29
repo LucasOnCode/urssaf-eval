@@ -10,9 +10,14 @@ use Urssaf\BicVenteStrategy;
 use Urssaf\BncStrategy;
 
 // 1. Configuration PDO SQLite...
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
+$pdo = new PDO('sqlite:' . __DIR__ . '/urssafc.sq3', options: $options);
 // 2. Création automatique de la table si elle n'existe pas...
-
-// Extraction des arguments passés au script
+$pdo->exec(file_get_contents(__DIR__ . "/schema.sql"));
+$repository = new ContractorRepository($pdo);
 $command = $argv[1] ?? null;
 
 switch ($command) {
@@ -27,6 +32,16 @@ switch ($command) {
             exit(1);
         }
         // 1. Valider le SIRET, gérer les doublons, et insérer en BDD
+        if (!preg_match('/^\d{14}$/', $siret)) {
+            echo "Erreur: SIRET invalide.\n";
+            exit(1);
+        }
+        if ($repository->findBySiret($siret) !== null) {
+            echo "Erreur: SIRET déjà utilisé.\n";
+            exit(1);
+        }
+        $repository->save($fullName, $siret, $activity, $taxSystem);
+        echo "Auto-entreprise enregistrée.\n";
         break;
 
     case 'ls':
@@ -42,6 +57,11 @@ switch ($command) {
             exit(1);
         }
         //1. Récupérer les données de l'auto-entreprise
+        $contractor = $repository->find($id);
+        if ($contractor === null) {
+            echo "Autoentreprise introuvable\n";
+            exit(1);
+        }
         //2. Injecter la Strategy a un objet Contractor (autoentreprise) 
         //3. Calculer les cotisations sociales, appliquer la fiscalité et construire le rapport
 
