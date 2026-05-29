@@ -1,0 +1,15 @@
+{
+    "name": "lutzl/starter",
+    "autoload": {
+        "psr-4": {
+            "Urssaf\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lucas Lutz",
+            "email": "lutzlucas03@gmail.com"
+        }
+    ],
+    "require": {}
+}
