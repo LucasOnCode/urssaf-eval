@@ -11,7 +11,7 @@ class BncStrategy extends AbstractActivityStrategy
 
     protected function taxDischargePayment(): float
     {
-        return 0.3;
+        return 0.022;
     }
 
     protected function abatementRate(): float
@@ -21,6 +21,6 @@ class BncStrategy extends AbstractActivityStrategy
 
     protected function specificSubsidy(float $caHt): float
     {
-        return $caHt > 1500 ? $caHt * 0.15 : 0.0;
+        return $caHt > 1500 ? $caHt * 0.15 : 0;
     }
 }

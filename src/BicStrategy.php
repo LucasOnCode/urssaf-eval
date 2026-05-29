@@ -11,12 +11,12 @@ class BicStrategy extends AbstractActivityStrategy
 
     protected function taxDischargePayment(): float
     {
-        return 0.01;
+        return 0.017;
     }
 
     protected function abatementRate(): float
     {
-        return 0.71;
+        return 0.50;
     }
 
     protected function specificSubsidy(float $caHt): float

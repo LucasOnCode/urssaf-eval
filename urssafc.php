@@ -39,6 +39,11 @@ switch ($command) {
 
     case 'ls':
         // 1. Lister les microentreprises
+        $contractors = $repository->findAll();
+        foreach ($contractors as $c) {
+            echo $c->describe() . PHP_EOL;
+        }
+        echo "Total: " . count($contractors) . PHP_EOL;
         break;
 
     case 'dry-declare':
