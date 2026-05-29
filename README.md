@@ -19,9 +19,13 @@ Instructions à copier coller dans le terminal pour tester :
 composer install
 
 php urssafc.php add "John Incubator Jones" 18812369758410 bic-vente ps
+
 php urssafc.php add "Emily Brontë" 33512369768412 bic vfl
+
 php urssafc.php ls
+
 php urssafc.php dry-declare 1 3235
+
 php urssafc.php dry-declare 2 4050
 
 ## Questions (5 points)
