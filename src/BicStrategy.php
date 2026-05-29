@@ -21,6 +21,6 @@ class BicStrategy extends AbstractActivityStrategy
 
     protected function specificSubsidy(float $caHt): float
     {
-        return $caHt > 3000 ? 200 : 0;
+        return 0;
     }
 }

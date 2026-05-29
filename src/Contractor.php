@@ -8,14 +8,15 @@ class Contractor{
         private string $siret,
         private string $activity,
         private string $taxSystem,
-        private AbstractActivityStrategy $strategy
+        private AbstractActivityStrategy $strategy,
+        private ?int $id = null,
     ){}
 
     public function buildReport(float $caHt): string
     {
-        $activityLabels = ["bic-ventes" => "BIC Ventes", "bic" => "BIC", "bnc" => "BNC"];
+        $activityLabels = ["bic-vente" => "BIC Vente", "bic" => "BIC", "bnc" => "BNC"];
         $taxLabels = ["ps" => "Prélévement à la source", "vfl" => "Versement fiscal libératoire"];
-        $header = $this->fullname . " " . $activityLabels[$this->activity] . " " . $taxLabels[$this->taxSystem] . PHP_EOL;
+        $header = $this->fullName . " " . $activityLabels[$this->activity] . " " . $taxLabels[$this->taxSystem] . PHP_EOL;
         return $header . $this->strategy->buildReport($caHt, $this->taxSystem);
     }
 

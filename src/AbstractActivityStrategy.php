@@ -9,24 +9,24 @@ abstract class AbstractActivityStrategy
         $cotisation = $caHt * $this->cotisationRate();
         $subsidy = $this->specificSubsidy($caHt);
         $report = "";
-        $report .= "CA HT mensuel :" . number_format($caHt, 2, ' ', ' ') . " Euros" . PHP_EOL;
+        $report .= "CA HT mensuel :" . number_format($caHt, 2, ',', ' ') . " Euros" . PHP_EOL;
 
         if ($subsidy > 0) {
-            $report .= "Aide spécifique : " . number_format($subsidy, 2, ' ', ' ') . " Euros" . PHP_EOL;
+            $report .= "Aide spécifique : " . number_format($subsidy, 2, ',', ' ') . " Euros" . PHP_EOL;
         }
 
-        $report .= "Cotisations sociales : " . number_format($cotisation, 2, ' ', ' ') . " Euros" . PHP_EOL;
+        $report .= "Cotisations sociales : " . number_format($cotisation, 2, ',', ' ') . " Euros" . PHP_EOL;
 
         if ($taxSystem === "ps"){
             $revenueImposable = $caHt * (1 - $this->abatementRate());
             $caTtc = $caHt - $cotisation + $subsidy;
-            $report .= "Revenu imposable :" . number_format($revenueImposable, 2, ' ', ' ') . " Euros" . PHP_EOL;
+            $report .= "Revenu imposable :" . number_format($revenueImposable, 2, ',', ' ') . " Euros" . PHP_EOL;
         }else{
             $impôt = $caHt * $this->taxDischargePayment();
             $caTtc = $caHt - $cotisation - $impôt + $subsidy;
-            $report .= "Montant impôt :" . number_format($impôt, 2, ' ', ' ') . " Euros" . PHP_EOL;
+            $report .= "Montant impôt :" . number_format($impôt, 2, ',', ' ') . " Euros" . PHP_EOL;
         }
-        $report .= "CA TTC :" . number_format($caTtc, 2, ' ', ' ') . " Euros" . PHP_EOL;
+        $report .= "CA TTC :" . number_format($caTtc, 2, ',', ' ') . " Euros" . PHP_EOL;
 
         return $report;
     }

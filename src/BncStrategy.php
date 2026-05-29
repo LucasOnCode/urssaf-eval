@@ -21,6 +21,6 @@ class BncStrategy extends AbstractActivityStrategy
 
     protected function specificSubsidy(float $caHt): float
     {
-        return $caHt > 1500 ? $caHt * 0.15 : 0;
+        return $caHt < 1500 ? $caHt * 0.15 : 0;
     }
 }
